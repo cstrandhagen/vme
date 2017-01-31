@@ -42,6 +42,7 @@ class v2718(object):
 
     def __init__(self):
         self.handle = caenvme.Init(BoardTypes.V2718)
+        # TODO: self check
         logger.debug('VME bridge initialised ({0})'.format(self.handle))
 
     def __del__(self):
@@ -49,8 +50,8 @@ class v2718(object):
         End VME connection on delete.
         '''
         if self.handle is not None:
-            logger.debug('VME bridge disconnected')
             caenvme.End(self.handle)
+            logger.debug('VME bridge disconnected')
 
     def singleReadD32(self, address):
         '''
@@ -121,7 +122,6 @@ class v2718(object):
         '''
         logger.debug('check IRQ')
         mask = caenvme.IRQCheck(self.handle)
-        print mask, int(np.log2(mask)) + 1
 
         return int(np.log2(mask)) + 1
 

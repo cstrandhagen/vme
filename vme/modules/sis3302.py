@@ -518,7 +518,7 @@ class SIS3302(object):
         # check if more than 4MSamples are requested at once
         if n_samples > samples_per_page:
             n_pages = n_samples / samples_per_page
-            print 'splitting into {0} pages'.format(n_pages)
+            logger.debug('splitting into {0} pages'.format(n_pages))
 
             samples = [samples_per_page for i in xrange(n_pages)]
             rest = n_samples - (n_pages * samples_per_page)
@@ -532,8 +532,6 @@ class SIS3302(object):
                 self.selectMemoryPage(i)
                 readout = self.vme.blockReadD16(address, n)
                 data = np.concatenate([data, readout])
-
-            print len(data), n_samples, n_events * page_size
         else:
             data = self.vme.blockReadD16(address, n_samples)
 

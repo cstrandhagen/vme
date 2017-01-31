@@ -34,6 +34,17 @@ class CAEN895(object):
         self.vme = vme
         self.base_address = base_address
 
+        mod_type = self.getModuleType()
+        logger.debug('module type is {0}'.format(mod_type))
+
+        if mod_type != 2132:
+            raise RuntimeError('wrong module type')
+
+        msg = 'connected to controller {0} at address {1}'
+        logger.debug(msg.format(self.vme, self.base_address))
+
+        # TODO: self check
+
     def getModuleID(self):
         logger.debug('get module ID')
         return self.vme.singleReadD16(self.base_address + FIXED_CODE)
@@ -117,5 +128,5 @@ class CAEN895(object):
         self.vme.singleWriteD16(self.base_address + MAJORITY,
                                 majority(majority_level))
 
-    def sendTestPulse(self):
+    def sendTestpulse(self):
         self.vme.singleWriteD16(self.base_address + TEST_PULSE, 1)
